@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Topshelf;
+//using Topshelf;
+using WinStash.Core.config;
+using Newtonsoft.Json;
 
 namespace WinStash
 {
@@ -13,22 +11,53 @@ namespace WinStash
         static void Main(string[] args)
         {
 
+            var test = new MasterConfig();
 
-            HostFactory.Run(hostConfigurator =>
+            test.inputs.Add(new MasterInputConfig()
             {
-                hostConfigurator.Service<WinStashSrvc>(serviceConfigurator =>
-                {
-                    serviceConfigurator.ConstructUsing(() => new WinStashSrvc());
-                    serviceConfigurator.WhenStarted(myService => myService.Start());
-                    serviceConfigurator.WhenStopped(myService => myService.Stop());
-                });
+                pluginType = "windowsevent",
+                configuration = new Dictionary<string, string>()
+                                {
+                                    { "test", "test" },
+                                    { "test2", "test2" }
 
-                hostConfigurator.RunAsLocalSystem();
-
-                hostConfigurator.SetDisplayName("WinStash");
-                hostConfigurator.SetDescription("Windows Logging tool");
-                hostConfigurator.SetServiceName("WinStash");
+                                }
             });
+
+            test.outputs.Add(new MasterOutputConfig()
+            {
+                pluginType = "json",
+                configuration = new Dictionary<string, string>()
+                                {
+                                    { "test", "test" },
+                                    { "test2", "test2" }
+
+                                }
+            });
+
+            var text = JsonConvert.SerializeObject(test);
+
+           // var test2 = 
+
+            Console.WriteLine("Hello from WinStash :)");
+            Console.ReadLine();
+
+
+            //HostFactory.Run(hostConfigurator =>
+            //{
+            //    hostConfigurator.Service<WinStashSrvc>(serviceConfigurator =>
+            //    {
+            //        serviceConfigurator.ConstructUsing(() => new WinStashSrvc());
+            //        serviceConfigurator.WhenStarted(myService => myService.Start());
+            //        serviceConfigurator.WhenStopped(myService => myService.Stop());
+            //    });
+
+            //    hostConfigurator.RunAsLocalSystem();
+
+            //    hostConfigurator.SetDisplayName("WinStash");
+            //    hostConfigurator.SetDescription("Windows Logging tool");
+            //    hostConfigurator.SetServiceName("WinStash");
+            //});
 
 
 
