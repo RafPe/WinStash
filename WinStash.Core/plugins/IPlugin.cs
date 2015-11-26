@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WinStash.Core.plugins;
 
-namespace WinStash.Core.Plugins
+namespace WinStash.Core.plugins
 {
-    public interface IOutputPlugin : IPlugin
+    public interface IPlugin
     {
-
+        string key          { get; }
+        string pluginType   { get; }
     }
 }

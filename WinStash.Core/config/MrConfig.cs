@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,11 +14,51 @@ namespace WinStash.Core
     /// </summary>
     public static class MrConfig
     {
-        public static  MasterConfig config { get; private set; }
+        public  static   MasterConfig    config
+        {
+            get
+            {
+                return _config;
+            }
+        }
+        private static   MasterConfig    _config;
 
+
+        public  static   bool            ConfigurationValid
+        { 
+            get
+            {
+                return _ConfigurationValid;
+            }
+        }
+        private static   bool            _ConfigurationValid = false;
+        
+
+
+        /// <summary>
+        /// Method responsible for loading configuration
+        /// </summary>
+        /// <returns></returns>
         public static bool LoadConfiguration()
         {
-            return true;
+            string pathToDefault = $"{System.IO.Directory.GetCurrentDirectory()}\\configs\\config.json";
+
+            try
+            {
+               _config =  JsonConvert.DeserializeObject<MasterConfig>(System.IO.File.ReadAllText( pathToDefault ));
+
+                //TODO validate extra ?
+               _ConfigurationValid = true;
+
+                return _ConfigurationValid;
+
+            }
+            catch(Exception ex)
+            {
+                //TODO: Log we have an exception
+
+                return _ConfigurationValid;
+            }
         }
     }
 }

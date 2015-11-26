@@ -3,6 +3,7 @@ using System.Collections.Generic;
 //using Topshelf;
 using WinStash.Core.config;
 using Newtonsoft.Json;
+using WinStash.Core;
 
 namespace WinStash
 {
@@ -11,35 +12,16 @@ namespace WinStash
         static void Main(string[] args)
         {
 
-            var test = new MasterConfig();
+            MrConfig.LoadConfiguration();
 
-            test.inputs.Add(new MasterInputConfig()
+
+            Console.WriteLine($"I have the following number of inputs : {MrConfig.config.inputs.Count}");
+
+            foreach (var singleConfig in MrConfig.config.inputs)
             {
-                pluginType = "windowsevent",
-                configuration = new Dictionary<string, string>()
-                                {
-                                    { "test", "test" },
-                                    { "test2", "test2" }
+                Console.WriteLine($"Input type : {singleConfig.pluginType}");
+            }
 
-                                }
-            });
-
-            test.outputs.Add(new MasterOutputConfig()
-            {
-                pluginType = "json",
-                configuration = new Dictionary<string, string>()
-                                {
-                                    { "test", "test" },
-                                    { "test2", "test2" }
-
-                                }
-            });
-
-            var text = JsonConvert.SerializeObject(test);
-
-           // var test2 = 
-
-            Console.WriteLine("Hello from WinStash :)");
             Console.ReadLine();
 
 

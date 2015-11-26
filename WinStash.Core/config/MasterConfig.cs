@@ -10,33 +10,42 @@ namespace WinStash.Core.config
     {
         public string                       pluginType { get; set; }
         public Dictionary<string, string>   configuration   { get; set; }
-    }
 
-    public class MasterInputConfig : BaseConfig
-    {
-        public MasterInputConfig()
+        /// <summary>
+        /// Default constructor for our base class
+        /// </summary>
+        public BaseConfig()
         {
-            this.configuration = new Dictionary<string, string>();
+            this.configuration = new Dictionary<string, string>() { { "key", "default_value" } };
+
         }
     }
 
-    public class MasterOutputConfig : BaseConfig
+    public class InputConfig : BaseConfig
     {
-        public MasterOutputConfig()
+        public InputConfig()
         {
-            this.configuration = new Dictionary<string, string>();           
+            
+        }
+    }
+
+    public class OutputConfig : BaseConfig
+    {
+        public OutputConfig()
+        {
+       
         }
     }
 
     public class MasterConfig
     {
-        public List<MasterInputConfig>  inputs { get; set; }
-        public List<MasterOutputConfig> outputs { get; set; }
+        public List<InputConfig>  inputs { get; set; }
+        public List<OutputConfig> outputs { get; set; }
 
         public MasterConfig()
         {
-            this.inputs     = new List<MasterInputConfig>();
-            this.outputs    = new List<MasterOutputConfig>();
+            this.inputs     = new List<InputConfig>();
+            this.outputs    = new List<OutputConfig>();
         }
     }
 }
