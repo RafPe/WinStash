@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Topshelf;
+//using Topshelf;
+using WinStash.Core.config;
+using Newtonsoft.Json;
+using WinStash.Core;
 
 namespace WinStash
 {
@@ -13,22 +12,34 @@ namespace WinStash
         static void Main(string[] args)
         {
 
+            MrConfig.LoadConfiguration();
 
-            HostFactory.Run(hostConfigurator =>
+
+            Console.WriteLine($"I have the following number of inputs : {MrConfig.config.inputs.Count}");
+
+            foreach (var singleConfig in MrConfig.config.inputs)
             {
-                hostConfigurator.Service<WinStashSrvc>(serviceConfigurator =>
-                {
-                    serviceConfigurator.ConstructUsing(() => new WinStashSrvc());
-                    serviceConfigurator.WhenStarted(myService => myService.Start());
-                    serviceConfigurator.WhenStopped(myService => myService.Stop());
-                });
+                Console.WriteLine($"Input type : {singleConfig.pluginType}");
+            }
 
-                hostConfigurator.RunAsLocalSystem();
+            Console.ReadLine();
 
-                hostConfigurator.SetDisplayName("WinStash");
-                hostConfigurator.SetDescription("Windows Logging tool");
-                hostConfigurator.SetServiceName("WinStash");
-            });
+
+            //HostFactory.Run(hostConfigurator =>
+            //{
+            //    hostConfigurator.Service<WinStashSrvc>(serviceConfigurator =>
+            //    {
+            //        serviceConfigurator.ConstructUsing(() => new WinStashSrvc());
+            //        serviceConfigurator.WhenStarted(myService => myService.Start());
+            //        serviceConfigurator.WhenStopped(myService => myService.Stop());
+            //    });
+
+            //    hostConfigurator.RunAsLocalSystem();
+
+            //    hostConfigurator.SetDisplayName("WinStash");
+            //    hostConfigurator.SetDescription("Windows Logging tool");
+            //    hostConfigurator.SetServiceName("WinStash");
+            //});
 
 
 
