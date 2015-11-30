@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Autofac;
+using Autofac.Extras.AttributeMetadata;
+using Autofac.Features.Metadata;
 //using Topshelf;
 using WinStash.Core.config;
 using Newtonsoft.Json;
 using WinStash.Core;
+using WinStash.Core.plugins;
 using WinStash.Core.Plugins;
 
 namespace WinStash
@@ -29,30 +33,50 @@ namespace WinStash
 
             List<Type> inmplementedTypes = null;
 
+            List<PluginDescriptor> descriptors = new List<PluginDescriptor>();
+
 
             foreach (FileInfo fileInfo in availablePlugins.GetFiles("input.*.dll", SearchOption.AllDirectories))
             {
                 var singleAssembly = Assembly.LoadFile(fileInfo.FullName);
+                var classType =
+                    singleAssembly.GetTypes()
+                        .FirstOrDefault(p => typeof (IInputPlugin).IsAssignableFrom(p) && p.IsClass);
 
-                inmplementedTypes = singleAssembly.GetTypes().Where(p => typeof(IInputPlugin).IsAssignableFrom(p) && p.IsClass).ToList();
+                PluginDescriptor myvar = new PluginDescriptor()
+                {
+                    implementedType = classType,
+                    pluginMeta = MetadataHelper.GetMetadata(classType)
+                };
 
-                builder.RegisterAssemblyTypes( singleAssembly )
-                    .Where(t => t.Name.StartsWith("Input"))
-                    .AsImplementedInterfaces()
-                    .InstancePerLifetimeScope();
+                
+                
+                descriptors.Add(myvar);
+
+                builder.RegisterAssemblyTypes(singleAssembly);
             }
 
-            // build our container with dependencies
+            //// build our container with dependencies
             var container = builder.Build();
 
-            // Test resolving of components 
+            //// Test resolving of components 
             var scope = container.BeginLifetimeScope();
 
-            var type = Type.GetType(inmplementedTypes[0].Name);
-            IInputPlugin instance = (IInputPlugin) container.Resolve(type);
+            IInputPlugin cc = scope.ResolveNamed<IInputPlugin>(descriptors[0].pluginMeta.FirstOrDefault(k => k.Key == "Name").Value.ToString());
+
+            //var ssss = descriptors[0].implementedType;
+
+
+
+            //var instance = (IInputPlugin) container.Resolve();
 
             // Here we  should get test information now 
-            instance.QueryForData();
+            Console.WriteLine( cc.QueryForData() );
+
+
+
+
+
 
 
 

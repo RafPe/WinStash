@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WinStash.Core.plugins;
 using WinStash.Core.Plugins;
 
 namespace Input.WinEvent
 {
+    [PluginType("winevent")]
     public class WinEvent : IWinEvent
     {
         public string FilterQuery
