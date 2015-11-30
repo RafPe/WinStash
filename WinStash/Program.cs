@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using Autofac;
 //using Topshelf;
 using WinStash.Core.config;
 using Newtonsoft.Json;
 using WinStash.Core;
+using WinStash.Core.Plugins;
 
 namespace WinStash
 {
@@ -11,6 +16,45 @@ namespace WinStash
     {
         static void Main(string[] args)
         {
+
+            // Create our container builder 
+            var builder = new ContainerBuilder();
+
+            
+
+            // get folder with plugins 
+            var folder = AppDomain.CurrentDomain.BaseDirectory;
+            var availablePlugins = new DirectoryInfo($"{folder}\\plugins");
+
+
+            List<Type> inmplementedTypes = null;
+
+
+            foreach (FileInfo fileInfo in availablePlugins.GetFiles("input.*.dll", SearchOption.AllDirectories))
+            {
+                var singleAssembly = Assembly.LoadFile(fileInfo.FullName);
+
+                inmplementedTypes = singleAssembly.GetTypes().Where(p => typeof(IInputPlugin).IsAssignableFrom(p) && p.IsClass).ToList();
+
+                builder.RegisterAssemblyTypes( singleAssembly )
+                    .Where(t => t.Name.StartsWith("Input"))
+                    .AsImplementedInterfaces()
+                    .InstancePerLifetimeScope();
+            }
+
+            // build our container with dependencies
+            var container = builder.Build();
+
+            // Test resolving of components 
+            var scope = container.BeginLifetimeScope();
+
+            var type = Type.GetType(inmplementedTypes[0].Name);
+            IInputPlugin instance = (IInputPlugin) container.Resolve(type);
+
+            // Here we  should get test information now 
+            instance.QueryForData();
+
+
 
             MrConfig.LoadConfiguration();
 

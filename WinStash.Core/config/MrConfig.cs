@@ -12,8 +12,10 @@ namespace WinStash.Core
     /// <summary>
     /// Main class used for configuration of application
     /// </summary>
-    public static class MrConfig
+    public class MrConfig
     {
+       
+
         public  static   MasterConfig    config
         {
             get

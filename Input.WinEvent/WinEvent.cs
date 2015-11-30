@@ -51,7 +51,7 @@ namespace Input.WinEvent
 
         public string QueryForData()
         {
-            throw new NotImplementedException();
+            return "some funky data back";
         }
     }
 }
