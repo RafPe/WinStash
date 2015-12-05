@@ -9,13 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{36E427E6-3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinStash.Core", "WinStash.Core\WinStash.Core.csproj", "{564ED579-D85B-4A2E-90C8-FE405EE64BEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Input.WinEvent", "Input.WinEvent\Input.WinEvent.csproj", "{ACB6E0C5-F33E-4598-944D-0FE3F8383BF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winstash.Input", "Input.WinEvent\Winstash.Input.csproj", "{ACB6E0C5-F33E-4598-944D-0FE3F8383BF8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Input", "Input", "{06332AD9-7766-4BD2-8915-DBA82DA9E52D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Output", "Output", "{0FC162FE-BB64-4005-953A-4D53ED212877}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Output.Generic", "Output.Generic\Output.Generic.csproj", "{DEDA3CFD-17B1-4970-96C9-5153DB8B0FDB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Filter", "Filter", "{48E7C5A6-9B29-4AEC-AF75-B2FCAB4A9A35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

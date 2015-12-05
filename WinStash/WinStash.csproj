@@ -74,6 +74,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Input.WinEvent\Winstash.Input.csproj">
+      <Project>{acb6e0c5-f33e-4598-944d-0fe3f8383bf8}</Project>
+      <Name>Winstash.Input</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WinStash.Core\WinStash.Core.csproj">
       <Project>{564ed579-d85b-4a2e-90c8-fe405ee64bee}</Project>
       <Name>WinStash.Core</Name>
