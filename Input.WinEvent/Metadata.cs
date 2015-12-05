@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac.Extras.AttributeMetadata;
 
-namespace Winstash.Input
+namespace Plugin.Input.WinEvent
 {
     [MetadataAttribute]
     public class PluginTypeAttribute : Attribute, IMetadataProvider

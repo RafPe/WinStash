@@ -11,12 +11,12 @@ using WinStash.Core.plugins;
 using WinStash.Core.Plugins;
 using EventLevel = System.Diagnostics.Eventing.Reader.EventLevel;
 
-namespace Winstash.Input
+namespace Plugin.Input.WinEvent
 {
     [PluginType("winevent","WinEvent")]
-    public class WinEvent : IWinEvent
+    public class WinEventPlugin : IWinEvent
     {
-        public WinEvent()
+        public WinEventPlugin()
         {
             
 

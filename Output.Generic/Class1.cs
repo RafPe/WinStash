@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Output.Generic
+namespace Plugin.Output.Generic
 {
     public class Class1
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WinStash.Core.Plugins;
 
-namespace Winstash.Input
+namespace Plugin.Input.WinEvent
 {
     public interface IWinEvent : IInputPlugin
     {

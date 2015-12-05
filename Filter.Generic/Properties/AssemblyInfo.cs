@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Plugin.Input.WinEvent")]
+[assembly: AssemblyTitle("Filter.Generic")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Plugin.Input.WinEvent")]
+[assembly: AssemblyProduct("Filter.Generic")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("acb6e0c5-f33e-4598-944d-0fe3f8383bf8")]
+[assembly: Guid("ba293d29-18d1-4570-a3a7-fe15872ac998")]
 
 // Version information for an assembly consists of the following four values:
 //
