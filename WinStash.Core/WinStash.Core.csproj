@@ -59,6 +59,8 @@
   <ItemGroup>
     <Compile Include="config\MasterConfig.cs" />
     <Compile Include="config\MrConfig.cs" />
+    <Compile Include="data\EventDictionary.cs" />
+    <Compile Include="data\EventProperties.cs" />
     <Compile Include="plugins\IInputPlugin.cs" />
     <Compile Include="plugins\IOutputPlugin.cs" />
     <Compile Include="plugins\IPlugin.cs" />

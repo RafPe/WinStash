@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WinStash.Core.data;
 using WinStash.Core.plugins;
 
 namespace WinStash.Core.Plugins
@@ -9,6 +10,6 @@ namespace WinStash.Core.Plugins
     public interface IInputPlugin : IPlugin
     {
 
-        List<Dictionary<string, object>> QueryForData(); 
+        List<EventDictionary> QueryForData(); 
     }
 }

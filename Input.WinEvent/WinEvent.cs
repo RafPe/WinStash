@@ -6,6 +6,7 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WinStash.Core.data;
 using WinStash.Core.plugins;
 using WinStash.Core.Plugins;
 using EventLevel = System.Diagnostics.Eventing.Reader.EventLevel;
@@ -29,7 +30,7 @@ namespace Winstash.Input
             }
         }
 
-        public List<Dictionary<string, object>> QueryForData()
+        public List<EventDictionary> QueryForData()
         {
 
             int tmplevel = 4;
@@ -50,25 +51,37 @@ namespace Winstash.Input
             EventLogQuery query = new EventLogQuery(tmpLogName, PathType.LogName, queryString);
 
             // Dictionary to hold our results
-            var dataList = new List<Dictionary<string, object>>();
+            List<EventDictionary> dataList = new List<EventDictionary>();
 
             EventLogReader reader = new EventLogReader(query);
             while ((eventRecord = reader.ReadEvent()) != null)
             {
+                var singleEvent = new EventDictionary();
 
-                var kvpdata = new  Dictionary<string, object>();
+                singleEvent[EventProperties.message] = eventRecord.FormatDescription();
+                singleEvent[EventProperties.Id] = eventRecord.Id.ToString();
+                singleEvent[EventProperties.threadId] = eventRecord.ThreadId?.ToString();
+                singleEvent[EventProperties.host] = eventRecord.MachineName;
+                singleEvent[EventProperties.logname] = eventRecord.LogName;
+                singleEvent[EventProperties.loglevel] = eventRecord.LevelDisplayName;
+                singleEvent[EventProperties.timestamp_utc] = eventRecord.TimeCreated?.ToUniversalTime().ToString("O");
 
-                kvpdata.Add("timestamp_utc",eventRecord.TimeCreated?.ToUniversalTime().ToString("O") );
-                kvpdata.Add("loglevel", eventRecord.LevelDisplayName);
-                kvpdata.Add("logname", eventRecord.LogName);
-                kvpdata.Add("host", eventRecord.MachineName);
-                kvpdata.Add("threadId", eventRecord.ThreadId?.ToString());
-                kvpdata.Add("Id", eventRecord.Id.ToString());
-                kvpdata.Add("message", eventRecord.FormatDescription());
+                //uuu.timestamp_utc = eventRecord.TimeCreated?.ToUniversalTime().ToString("O");
 
-                dataList.Add(kvpdata);
 
-                eventRecords.Add(eventRecord);
+                //var kvpdata = new  Dictionary<string, object>();
+
+                //kvpdata.Add("timestamp_utc", );
+                //kvpdata.Add("loglevel", );
+                //kvpdata.Add("logname", );
+                //kvpdata.Add("host", );
+                //kvpdata.Add("", );
+                //kvpdata.Add("Id", );
+                //kvpdata.Add("message", );
+
+                dataList.Add(singleEvent);
+
+                //eventRecords.Add(eventRecord);
             }
 
             return dataList;

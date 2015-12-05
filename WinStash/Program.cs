@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using Topshelf;
 using Winstash.Input;
 using WinStash.Core;
+using WinStash.Core.data;
 using WinStash.Core.plugins;
 using WinStash.Core.Plugins;
 
@@ -68,7 +69,12 @@ namespace WinStash
 
             foreach (IInputPlugin inputPlugin in neinie)
             {
-                Console.WriteLine(inputPlugin.QueryForData());
+                
+
+                foreach (EventDictionary evtd in inputPlugin.QueryForData())
+                {
+                    Console.WriteLine($"EVT : {evtd[EventProperties.Id]} about {evtd[EventProperties.timestamp_utc]}");
+                }
             }
 
             Console.ReadLine();
