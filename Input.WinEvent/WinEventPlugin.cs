@@ -6,6 +6,7 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac;
 using WinStash.Core.data;
 using WinStash.Core.plugins;
 using WinStash.Core.Plugins;
@@ -16,9 +17,9 @@ namespace Plugin.Input.WinEvent
     [PluginType("winevent","WinEvent")]
     public class WinEventPlugin : IWinEvent
     {
+
         public WinEventPlugin()
         {
-            
 
         }
 

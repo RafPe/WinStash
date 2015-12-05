@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Autofac;
+using Plugin.Input.WinEvent;
+using WinStash.Core.Plugins;
 
 namespace WinStash
 {
@@ -11,10 +14,11 @@ namespace WinStash
     {
 
         private Timer _timer;
+        private IContainer _container;
 
-        public WinStashSrvc()
+        public WinStashSrvc(IContainer cnt)
         {
-            
+            _container = cnt;
         }
 
         /// <summary>
@@ -32,7 +36,20 @@ namespace WinStash
         /// <param name="state"></param>
         private void tmr_callback(object state)
         {
-                Console.WriteLine($"Now executed : {DateTime.Now.ToUniversalTime().ToString("O")}");
+            // Create scope for this execution
+            using (var scope = _container.BeginLifetimeScope())
+            {
+                var service = scope.Resolve<IInputPlugin>();
+
+                var resultos = service.QueryForData();
+
+                //TODO: Debug part - remove when ready
+                Console.WriteLine($"EVT : count is {resultos.Count}");
+
+            }
+            
+            //TODO: Debug part - remove when ready ? Or build in debug switch?
+            Console.WriteLine($"EVT : Now executed : {DateTime.Now.ToUniversalTime().ToString("O")}");
 
         }
 
