@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
-using System.Diagnostics.Tracing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
 using WinStash.Core.data;
-using WinStash.Core.plugins;
-using WinStash.Core.Plugins;
-using EventLevel = System.Diagnostics.Eventing.Reader.EventLevel;
 
 namespace Plugin.Input.WinEvent
 {

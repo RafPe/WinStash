@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WinStash.Core.plugins
+﻿namespace WinStash.Core.plugins
 {
     //public class PluginDescriptor : IComparable<PluginDescriptor>
     //{

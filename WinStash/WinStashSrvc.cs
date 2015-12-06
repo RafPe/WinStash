@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Autofac;
-using Plugin.Input.WinEvent;
 using WinStash.Core.Plugins;
 
 namespace WinStash
@@ -36,6 +31,9 @@ namespace WinStash
         /// <param name="state"></param>
         private void tmr_callback(object state)
         {
+
+            _timer.Change(Timeout.Infinite, Timeout.Infinite);
+
             // Create scope for this execution
             using (var scope = _container.BeginLifetimeScope())
             {
@@ -46,11 +44,14 @@ namespace WinStash
                 //TODO: Debug part - remove when ready
                 Console.WriteLine($"EVT : count is {resultos.Count}");
 
+
             }
             
             //TODO: Debug part - remove when ready ? Or build in debug switch?
             Console.WriteLine($"EVT : Now executed : {DateTime.Now.ToUniversalTime().ToString("O")}");
 
+
+            _timer.Change(5000, 5000);
         }
 
         /// <summary>

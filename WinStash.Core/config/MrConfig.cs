@@ -1,13 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac;
-using Autofac.Core;
 using Autofac.Extras.AttributeMetadata;
 using WinStash.Core.config;
 using WinStash.Core.Plugins;
@@ -19,30 +15,11 @@ namespace WinStash.Core
     /// </summary>
     public class MrConfig
     {
-        public static List<Type> InputPluginAssemblies => _inputPluginAssemblies;
-        private static List<Type> _inputPluginAssemblies;
+        public static  MasterConfig config => _config;
+        private static MasterConfig _config;
 
-
-        public  static   MasterConfig    config
-        {
-            get
-            {
-                return _config;
-            }
-        }
-        private static   MasterConfig    _config;
-
-
-        public  static   bool            ConfigurationValid
-        { 
-            get
-            {
-                return _ConfigurationValid;
-            }
-        }
-        private static   bool            _ConfigurationValid = false;
-        
-
+        public static  bool isConfigurationValid => _isConfigurationValid;
+        private static bool _isConfigurationValid;
 
         /// <summary>
         /// Method responsible for loading configuration
@@ -57,16 +34,16 @@ namespace WinStash.Core
                _config =  JsonConvert.DeserializeObject<MasterConfig>(System.IO.File.ReadAllText( pathToDefault ));
 
                 //TODO validate extra ?
-               _ConfigurationValid = true;
+               _isConfigurationValid = true;
 
-                return _ConfigurationValid;
+                return isConfigurationValid;
 
             }
             catch(Exception ex)
             {
                 //TODO: Log we have an exception
 
-                return _ConfigurationValid;
+                return _isConfigurationValid;
             }
         }
 
@@ -79,7 +56,7 @@ namespace WinStash.Core
         {
 
             // Get assemblies 
-            var assemblies = Directory.GetFiles($"{AppDomain.CurrentDomain.BaseDirectory}\\plugins", "Winstash.Input*.dll", SearchOption.TopDirectoryOnly)
+            var assemblies = Directory.GetFiles($"{AppDomain.CurrentDomain.BaseDirectory}\\plugins", "Plugin.Input*.dll", SearchOption.AllDirectories)
                           .Select(Assembly.LoadFrom);
 
 
@@ -92,26 +69,6 @@ namespace WinStash.Core
 
                 cb.RegisterAssemblyTypes(assembly).AsImplementedInterfaces();
             }
-
-            
-
-            //foreach (Assembly assembly in assemblies)
-            //{
-            //    var singleassembly = assembly.GetTypes().FirstOrDefault(p => typeof(IInputPlugin).IsAssignableFrom(p) && p.IsClass);
-
-
-            //}
-
-            // Enumarate DLLS in search of input plugins
-            //foreach (FileInfo fileinfo in availablePlugins.GetFiles("Winstash.Input*.dll", SearchOption.AllDirectories))
-            //{
-            //    var singleassembly = Assembly.LoadFile(fileinfo.FullName);
-            //    var classtype =
-            //        singleassembly.GetTypes().FirstOrDefault(p => typeof(IInputPlugin).IsAssignableFrom(p) && p.IsClass);
-
-            //    _inputPluginAssemblies.Add( classtype );
-            //}
-
         }
 
     }

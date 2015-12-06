@@ -1,21 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Timers;
-using Autofac;
-using Autofac.Extras.AttributeMetadata;
-using Autofac.Features.Metadata;
+﻿using Autofac;
 //using Topshelf;
-using WinStash.Core.config;
-using Newtonsoft.Json;
 using Topshelf;
 using WinStash.Core;
-using WinStash.Core.data;
-using WinStash.Core.plugins;
-using WinStash.Core.Plugins;
 
 namespace WinStash
 {
@@ -28,10 +14,12 @@ namespace WinStash
             // Create our container builder 
             var builder = new ContainerBuilder();
 
+            // Load configs and plugins 
+            MrConfig.LoadInputPlugins(builder);
+
             builder.RegisterType<WinStashSrvc>();
 
-            // Load configs and plugins 
-            MrConfig.LoadInputPlugins(builder);            
+          
             MrConfig.LoadConfiguration();
 
 
