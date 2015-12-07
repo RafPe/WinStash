@@ -1,7 +1,10 @@
-﻿using Autofac;
+﻿using System.Collections.Generic;
+using Autofac;
+using Newtonsoft.Json;
 //using Topshelf;
 using Topshelf;
 using WinStash.Core;
+using WinStash.Core.config;
 
 namespace WinStash
 {

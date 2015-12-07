@@ -27,7 +27,8 @@ namespace WinStash.Core
         /// <returns></returns>
         public static bool LoadConfiguration()
         {
-            string pathToDefault = $"{System.IO.Directory.GetCurrentDirectory()}\\configs\\config.json";
+            string pathToDefault = @"C:\temp\config.json";
+            //string pathToDefault = $"{System.IO.Directory.GetCurrentDirectory()}\\configs\\config.json";
 
             try
             {

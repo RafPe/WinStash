@@ -78,6 +78,7 @@
     <Compile Include="IWinEvent.cs" />
     <Compile Include="Metadata.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WinEventConfig.cs" />
     <Compile Include="WinEventPlugin.cs" />
     <Compile Include="WinEventQuerySrvc.cs" />
   </ItemGroup>
