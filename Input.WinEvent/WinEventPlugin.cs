@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Xml.Linq;
+using System.Xml.XPath;
 using WinStash.Core.data;
 
 namespace Plugin.Input.WinEvent
@@ -57,12 +58,41 @@ namespace Plugin.Input.WinEvent
                 {
                     string evtXml = eventRecord.ToXml();
 
-                    
+                    var messagesElement = XElement.Parse(evtXml);
+
+
+
+                    XDocument xml = XDocument.Parse(evtXml);
+                    XNamespace ns = "http://schemas.microsoft.com/win/2004/08/events/event";
+
+                    foreach (var node in xml.Descendants(ns + "Data"))
+                    {
+                        Console.WriteLine("Name: " + (string)node.Attribute("Name") + "; " +
+                                           "Value: " + node.Value);
+                    }
+
+                    var messagesList = (from message in xml.Descendants(ns + "Data")
+                                        select new
+                                        {
+                                            Key = (string)message.Attribute("Name"),
+                                            Value = message.Value
+                                        }).ToList();
+
 
                     XDocument ususu = XDocument.Parse(evtXml);
 
 
-                    var feioufoidsfuo = ususu.Root.DescendantNodes();
+                    var feioufoidsfuo =
+                        ususu.Descendants(XName.Get("EventData",
+                            @"http://schemas.microsoft.com/win/2004/08/events/event"));
+
+                    var yayaya = feioufoidsfuo.DescendantNodesAndSelf();
+
+                    foreach (XNode xNode in yayaya)
+                    {
+                        
+                    }
+
 
                     var tststs = ususu.Descendants("EventData");
 
