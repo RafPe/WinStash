@@ -49,114 +49,66 @@ namespace Plugin.Input.WinEvent
             // Dictionary to hold our results
             List<EventDictionary> dataList = new List<EventDictionary>();
 
+            // Create reader and execute query
             EventLogReader reader = new EventLogReader(query);
             while ((eventRecord = reader.ReadEvent()) != null)
             {
-                var singleEvent = new EventDictionary();
+                // Process every event
 
-                try
-                {
-                    string evtXml = eventRecord.ToXml();
+                EventDictionary eventDictionary = new EventDictionary();
 
-                    var messagesElement = XElement.Parse(evtXml);
+                eventDictionary[WinEventProperties.message]         = eventRecord.FormatDescription();
+                eventDictionary[WinEventProperties.Id]              = eventRecord.Id.ToString();
+                eventDictionary[WinEventProperties.threadId]        = eventRecord.ThreadId?.ToString();
+                eventDictionary[WinEventProperties.host]            = eventRecord.MachineName;
+                eventDictionary[WinEventProperties.logname]         = eventRecord.LogName;
+                eventDictionary[WinEventProperties.loglevel]        = eventRecord.LevelDisplayName;
+                eventDictionary[WinEventProperties.timestamp_utc]   = eventRecord.TimeCreated?.ToUniversalTime().ToString("O");
 
+                eventDictionary.AddDictionaryEventProperties(this.ParseSingleEventrecord(eventRecord) );
 
-
-                    XDocument xml = XDocument.Parse(evtXml);
-                    XNamespace ns = "http://schemas.microsoft.com/win/2004/08/events/event";
-
-                    foreach (var node in xml.Descendants(ns + "Data"))
-                    {
-                        Console.WriteLine("Name: " + (string)node.Attribute("Name") + "; " +
-                                           "Value: " + node.Value);
-                    }
-
-                    var messagesList = (from message in xml.Descendants(ns + "Data")
-                                        select new
-                                        {
-                                            Key = (string)message.Attribute("Name"),
-                                            Value = message.Value
-                                        }).ToList();
-
-
-                    XDocument ususu = XDocument.Parse(evtXml);
-
-
-                    var feioufoidsfuo =
-                        ususu.Descendants(XName.Get("EventData",
-                            @"http://schemas.microsoft.com/win/2004/08/events/event"));
-
-                    var yayaya = feioufoidsfuo.DescendantNodesAndSelf();
-
-                    foreach (XNode xNode in yayaya)
-                    {
-                        
-                    }
-
-
-                    var tststs = ususu.Descendants("EventData");
-
-                    var niewiem = from evt in ususu.Descendants("EventData")
-                                  select new
-                                  {
-                                      rokko = evt.Attribute("name").Value,
-                                      bakko = evt.Attributes()
-                                  };
-                }
-                catch (Exception ex )
-                {
-
-                    throw; 
-                }
-                
-
-
-
-
-                // Array of strings containing XPath references
-                String[] xPathRefs = new String[1];
-                xPathRefs[0] = "Event/System/Task";
-
-                // Place those strings in an IEnumberable object
-                IEnumerable<String> xPathEnum = xPathRefs;
-
-
-                // Create the property selection context using the XPath reference
-                EventLogPropertySelector logPropertyContext = new EventLogPropertySelector(xPathEnum);
-
-                var ccc = (EventLogRecord) eventRecord;
-                var yyyy = ccc.GetPropertyValues(logPropertyContext);
-
-  
-
-
-                singleEvent[EventProperties.message] = eventRecord.FormatDescription();
-                singleEvent[EventProperties.Id] = eventRecord.Id.ToString();
-                singleEvent[EventProperties.threadId] = eventRecord.ThreadId?.ToString();
-                singleEvent[EventProperties.host] = eventRecord.MachineName;
-                singleEvent[EventProperties.logname] = eventRecord.LogName;
-                singleEvent[EventProperties.loglevel] = eventRecord.LevelDisplayName;
-                singleEvent[EventProperties.timestamp_utc] = eventRecord.TimeCreated?.ToUniversalTime().ToString("O");
-
-                //uuu.timestamp_utc = eventRecord.TimeCreated?.ToUniversalTime().ToString("O");
-
-
-                //var kvpdata = new  Dictionary<string, object>();
-
-                //kvpdata.Add("timestamp_utc", );
-                //kvpdata.Add("loglevel", );
-                //kvpdata.Add("logname", );
-                //kvpdata.Add("host", );
-                //kvpdata.Add("", );
-                //kvpdata.Add("Id", );
-                //kvpdata.Add("message", );
-
-                dataList.Add(singleEvent);
-
-                //eventRecords.Add(eventRecord);
             }
 
+            // return results
             return dataList;
         }
+
+        /// <summary>
+        /// Method is reponsible for parsing WindowsEvent XML 
+        /// into dictionary of Key/Value string string 
+        /// </summary>
+        /// <param name="eventRecord">Single event record object</param>
+        /// <returns> Dictionary</returns>
+        private Dictionary<string, string> ParseSingleEventrecord(EventRecord eventRecord)
+        {
+
+            try
+            {
+                string evtStrXml = eventRecord.ToXml();
+
+                XDocument xml = XDocument.Parse(evtStrXml);
+                XNamespace ns = "http://schemas.microsoft.com/win/2004/08/events/event";
+
+                var eventData = (from message in xml.Descendants(ns + "Data")
+                                    select new
+                                    {
+                                        Key = (string)message.Attribute("Name"),
+                                        Value = message.Value
+                                    }).ToDictionary(mc => mc.Key.ToString(),
+                                 mc => mc.Value.ToString(),
+                                 StringComparer.OrdinalIgnoreCase);
+
+                return eventData;
+
+
+            }
+            catch (Exception ex)
+            {
+                //TODO add logging here
+                return null;
+            }
+            
+
+        } 
     }
 }

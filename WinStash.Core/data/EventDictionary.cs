@@ -16,7 +16,7 @@ namespace WinStash.Core.data
         public EventDictionary()
         {
 
-            Type type = typeof(EventProperties);        // EventProperties is static class with static properties
+            Type type = typeof(WinEventProperties);        // EventProperties is static class with static properties
             foreach (var p in type.GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic))
             {
                 var v = p.GetValue(null); // static classes cannot be instanced, so use null...
@@ -24,14 +24,23 @@ namespace WinStash.Core.data
 
                 this.Add(v.ToString(),"");
             }
+        }
 
-            
-            //this.Add("timestamp_utc",this.timestamp_utc??"");
-            //this.Add("loglevel",this.loglevel??"");
-            //this.Add("logname",this.logname??"");
-            //this.Add("host",this.host??"");
-            //this.Add("Id",this.Id??"");
-            //this.Add("threadId",this.threadId??"");
+        /// <summary>
+        /// Method adding remaining properties to our dictionary
+        /// </summary>
+        /// <param name="props"></param>
+        public void AddDictionaryEventProperties(Dictionary<string, string> props)
+        {
+            if (ReferenceEquals(null, props)) return;
+
+            // Enumrate dictionary and adds it as members of this instance
+            foreach (KeyValuePair<string, string> pair in props)
+            {
+
+                this.Add(pair.Key, pair.Value);
+
+            }
         }
     }
 }
