@@ -44,20 +44,12 @@ namespace WinStash
 
                     try
                     {
-                        var plugin = scope.ResolveNamed<IInputPlugin>("winevent");
 
-                        var res = plugin.QueryForData();
+                            var plugin = scope.ResolveNamed<IInputPlugin>("winevent");
 
-                        Console.WriteLine(res[0]["guid"].ToString());
+                            var res = plugin.QueryForData();
 
-                        var plugin2 = scope.ResolveNamed<IInputPlugin>("file");
-
-                        var res2 = plugin2.QueryForData();
-
-                        Console.WriteLine(res2[0]["guid"].ToString());
-
-                        System.Threading.Thread.Sleep(1000);
-
+                            Console.WriteLine(res[0]["Id"].ToString());
 
                     }
                     catch (Exception)

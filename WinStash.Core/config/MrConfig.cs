@@ -112,8 +112,5 @@ namespace WinStash.Core.config
                 }
             }
         }
-
-
-
     }
 }

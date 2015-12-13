@@ -28,29 +28,34 @@ namespace Plugin.Input.WinEvent
 
         public List<IDictionary> QueryForData()
         {
-            var y = new Dictionary<string, string>();
-            y.Add("guid","winevt "+g);
+            //var y = new Dictionary<string, string>();
+            //y.Add("guid","winevt "+g);
 
-            return new List<IDictionary>() { y };
+            //return new List<IDictionary>() { y };
 
 
             int tmplevel = 0;
             string tmpLogName = "Security";
-            string tmpProviderName = "Microsoft-Windows-Security-Auditing";
+            string ProviderName = "Microsoft-Windows-Security-Auditing";
 
             List<EventRecord> eventRecords = new List<EventRecord>();   // Create a list to hold results 
             EventRecord eventRecord;
             //string queryString = String.Format(
-            //"*[System[(Level = {0}) and Provider[@Name = '{1}']" +
+            //"*[System[(Level = {0}) and " +
             //" and TimeCreated[@SystemTime >= '{2}'] and TimeCreated[@SystemTime <= '{3}']]]",
             string queryString = "*[System/Provider/@Name=\"Microsoft-Windows-Security-Auditing\"]";
+            string querystringModified =
+                $"*[System[(Level >= 0) and Provider[@Name = '{ProviderName}'] and TimeCreated[@SystemTime >= '{DateTime.Now.AddMinutes(-60).ToUniversalTime().ToString("o")}'] and TimeCreated[@SystemTime <= '{DateTime.Now.ToUniversalTime().ToString("o")}']]]";
+
+
+
             //4,
             //tmpProviderName,
             //DateTime.Now.AddDays(-1).ToUniversalTime().ToString("o"),
             //DateTime.Now.ToUniversalTime().ToString("o"));
 
 
-            EventLogQuery query = new EventLogQuery(tmpLogName, PathType.LogName, queryString);
+            EventLogQuery query = new EventLogQuery(tmpLogName, PathType.LogName, querystringModified);
 
             // Dictionary to hold our results
             List<EventDictionary> dataList = new List<EventDictionary>();

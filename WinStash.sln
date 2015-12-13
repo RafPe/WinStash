@@ -21,8 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Filter", "Filter", "{48E7C5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.Filter.WinEvent", "Filter.Generic\Plugin.Filter.WinEvent.csproj", "{BA293D29-18D1-4570-A3A7-FE15872AC998}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.Input.File", "Plugin.Input.File\Plugin.Input.File.csproj", "{3D9DB7B3-5C55-4ABE-B181-BC1990F90DEB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,14 +69,6 @@ Global
 		{BA293D29-18D1-4570-A3A7-FE15872AC998}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA293D29-18D1-4570-A3A7-FE15872AC998}.Release|x64.ActiveCfg = Release|x64
 		{BA293D29-18D1-4570-A3A7-FE15872AC998}.Release|x64.Build.0 = Release|x64
-		{3D9DB7B3-5C55-4ABE-B181-BC1990F90DEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D9DB7B3-5C55-4ABE-B181-BC1990F90DEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D9DB7B3-5C55-4ABE-B181-BC1990F90DEB}.Debug|x64.ActiveCfg = Debug|x64
-		{3D9DB7B3-5C55-4ABE-B181-BC1990F90DEB}.Debug|x64.Build.0 = Debug|x64
-		{3D9DB7B3-5C55-4ABE-B181-BC1990F90DEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D9DB7B3-5C55-4ABE-B181-BC1990F90DEB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D9DB7B3-5C55-4ABE-B181-BC1990F90DEB}.Release|x64.ActiveCfg = Release|x64
-		{3D9DB7B3-5C55-4ABE-B181-BC1990F90DEB}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +78,5 @@ Global
 		{ACB6E0C5-F33E-4598-944D-0FE3F8383BF8} = {06332AD9-7766-4BD2-8915-DBA82DA9E52D}
 		{DEDA3CFD-17B1-4970-96C9-5153DB8B0FDB} = {0FC162FE-BB64-4005-953A-4D53ED212877}
 		{BA293D29-18D1-4570-A3A7-FE15872AC998} = {48E7C5A6-9B29-4AEC-AF75-B2FCAB4A9A35}
-		{3D9DB7B3-5C55-4ABE-B181-BC1990F90DEB} = {06332AD9-7766-4BD2-8915-DBA82DA9E52D}
 	EndGlobalSection
 EndGlobal
