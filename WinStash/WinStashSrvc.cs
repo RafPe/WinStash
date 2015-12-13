@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading;
 using Autofac;
-using WinStash.Core.Plugins;
+using Plugin.Input.WinEvent;
+using WinStash.Core.plugins;
 
 namespace WinStash
 {
@@ -38,6 +39,8 @@ namespace WinStash
             using (var scope = _container.BeginLifetimeScope())
             {
                 var service = scope.Resolve<IInputPlugin>();
+
+                var srvc2 = scope.Resolve<IWinEventPlugin>();
 
                 var resultos = service.QueryForData();
 

@@ -1,6 +1,4 @@
-﻿using WinStash.Core.plugins;
-
-namespace WinStash.Core.Plugins
+﻿namespace WinStash.Core.plugins
 {
     public interface IOutputPlugin : IPlugin
     {

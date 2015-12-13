@@ -2,6 +2,5 @@
 {
     public interface IPlugin
     {
-        string key          { get; }
     }
 }

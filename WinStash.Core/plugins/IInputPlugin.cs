@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using WinStash.Core.data;
-using WinStash.Core.plugins;
+﻿using System.Collections;
+using System.Collections.Generic;
 
-namespace WinStash.Core.Plugins
+namespace WinStash.Core.plugins
 {
     /// <summary>
     /// This interface defines minimum required for Input plugin
@@ -10,6 +9,6 @@ namespace WinStash.Core.Plugins
     public interface IInputPlugin : IPlugin
     {
 
-        List<EventDictionary> QueryForData(); 
+        List<IDictionary> QueryForData(); 
     }
 }

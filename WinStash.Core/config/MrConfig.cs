@@ -1,14 +1,14 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Autofac;
+using Autofac.Core;
 using Autofac.Extras.AttributeMetadata;
-using WinStash.Core.config;
-using WinStash.Core.Plugins;
+using Newtonsoft.Json;
+using WinStash.Core.plugins;
 
-namespace WinStash.Core
+namespace WinStash.Core.config
 {
     /// <summary>
     /// Main class used for configuration of application
@@ -71,6 +71,49 @@ namespace WinStash.Core
                 cb.RegisterAssemblyTypes(assembly).AsImplementedInterfaces();
             }
         }
+
+        // http://devkimchi.com/631/dynamic-module-loading-with-autofac/
+
+        /// <summary>
+        /// This method dynamically registers modules with our plugins by scanning for autofac modules
+        /// and creating their instances for registration.
+        /// </summary>
+        /// <param name="builder">container builder object</param>
+        public static void RegisterModules(ContainerBuilder builder)
+        {
+            // #1
+            var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (String.IsNullOrWhiteSpace(path))
+            {
+                return;
+            }
+
+            //  #2
+            //var assemblies = Directory.GetFiles(path, "Module*.dll", SearchOption.TopDirectoryOnly)
+            //                          .Select(Assembly.LoadFrom);
+
+            // Get assemblies 
+            var assemblies = Directory.GetFiles($"{AppDomain.CurrentDomain.BaseDirectory}\\plugins", "Plugin.Input*.dll", SearchOption.AllDirectories)
+                          .Select(Assembly.LoadFrom);
+
+
+            foreach (var assembly in assemblies)
+            {
+                //  #3
+                var modules = assembly.GetTypes()
+                                      .Where(p => typeof(IModule).IsAssignableFrom(p)
+                                                  && !p.IsAbstract)
+                                      .Select(p => (IModule)Activator.CreateInstance(p));
+
+                //  #4
+                foreach (var module in modules)
+                {
+                    builder.RegisterModule(module);
+                }
+            }
+        }
+
+
 
     }
 }

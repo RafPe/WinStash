@@ -1,8 +1,8 @@
-﻿using WinStash.Core.Plugins;
+﻿using WinStash.Core.plugins;
 
 namespace Plugin.Input.WinEvent
 {
-    public interface IWinEvent : IInputPlugin
+    public interface IWinEventPlugin : IInputPlugin
     {
         string key          { get; }
     }

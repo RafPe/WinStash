@@ -1,20 +1,21 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Xml.Linq;
-using System.Xml.XPath;
 using WinStash.Core.data;
 
 namespace Plugin.Input.WinEvent
 {
     [PluginType("winevent","WinEvent")]
-    public class WinEventPlugin : IWinEvent
+    public class WinEventPlugin : IWinEventPlugin
     {
+        private string g;
 
         public WinEventPlugin()
         {
-
+            g = Guid.NewGuid().ToString();
         }
 
         public string key
@@ -25,8 +26,13 @@ namespace Plugin.Input.WinEvent
             }
         }
 
-        public List<EventDictionary> QueryForData()
+        public List<IDictionary> QueryForData()
         {
+            var y = new Dictionary<string, string>();
+            y.Add("guid","winevt "+g);
+
+            return new List<IDictionary>() { y };
+
 
             int tmplevel = 0;
             string tmpLogName = "Security";
@@ -67,10 +73,12 @@ namespace Plugin.Input.WinEvent
 
                 eventDictionary.AddDictionaryEventProperties(this.ParseSingleEventrecord(eventRecord) );
 
+                dataList.Add(eventDictionary);
+
             }
 
             // return results
-            return dataList;
+            return new List<IDictionary>(dataList);
         }
 
         /// <summary>
