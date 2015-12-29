@@ -1,4 +1,4 @@
-﻿namespace WinStash.Core.plugins
+﻿namespace WinStash.Core.contracts
 {
     public interface IPlugin
     {

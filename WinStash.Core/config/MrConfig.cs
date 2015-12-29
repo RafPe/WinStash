@@ -6,7 +6,9 @@ using Autofac;
 using Autofac.Core;
 using Autofac.Extras.AttributeMetadata;
 using Newtonsoft.Json;
+using WinStash.Core.contracts;
 using WinStash.Core.plugins;
+using static System.String;
 
 namespace WinStash.Core.config
 {
@@ -33,8 +35,6 @@ namespace WinStash.Core.config
             try
             {
                _config =  JsonConvert.DeserializeObject<MasterConfig>(System.IO.File.ReadAllText( pathToDefault ));
-
-                //TODO validate extra ?
                _isConfigurationValid = true;
 
                 return isConfigurationValid;
@@ -42,57 +42,28 @@ namespace WinStash.Core.config
             }
             catch(Exception ex)
             {
-                //TODO: Log we have an exception
-
                 return _isConfigurationValid;
             }
         }
 
-
-        /// <summary>
-        /// Method allowing for loading of input plugins
-        /// </summary>
-        /// <param name="cb"> ContainerBuilder </param>
-        public static void LoadInputPlugins(ContainerBuilder cb)
-        {
-
-            // Get assemblies 
-            var assemblies = Directory.GetFiles($"{AppDomain.CurrentDomain.BaseDirectory}\\plugins", "Plugin.Input*.dll", SearchOption.AllDirectories)
-                          .Select(Assembly.LoadFrom);
-
-
-            foreach (Assembly assembly in assemblies)
-            {
-                // Retireve plugin metadata
-                var pluginMeta =
-                    MetadataHelper.GetMetadata(
-                        assembly.GetTypes().FirstOrDefault(p => typeof (IInputPlugin).IsAssignableFrom(p) && p.IsClass));
-
-                cb.RegisterAssemblyTypes(assembly).AsImplementedInterfaces();
-            }
-        }
-
-        // http://devkimchi.com/631/dynamic-module-loading-with-autofac/
-
         /// <summary>
         /// This method dynamically registers modules with our plugins by scanning for autofac modules
         /// and creating their instances for registration.
+        ///
+        /// http://devkimchi.com/631/dynamic-module-loading-with-autofac/       
         /// </summary>
         /// <param name="builder">container builder object</param>
         public static void RegisterModules(ContainerBuilder builder)
         {
             // #1
             var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            if (String.IsNullOrWhiteSpace(path))
+
+            if (IsNullOrWhiteSpace(path))
             {
                 return;
             }
 
-            //  #2
-            //var assemblies = Directory.GetFiles(path, "Module*.dll", SearchOption.TopDirectoryOnly)
-            //                          .Select(Assembly.LoadFrom);
-
-            // Get assemblies 
+            // #2
             var assemblies = Directory.GetFiles($"{AppDomain.CurrentDomain.BaseDirectory}\\plugins", "Plugin.Input*.dll", SearchOption.AllDirectories)
                           .Select(Assembly.LoadFrom);
 

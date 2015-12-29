@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WinStash.Core.plugins
+namespace WinStash.Core.contracts
 {
     public interface IPluginDescriptor
     {

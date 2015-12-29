@@ -1,4 +1,5 @@
-﻿using WinStash.Core.plugins;
+﻿using WinStash.Core.contracts;
+using WinStash.Core.plugins;
 
 namespace Plugin.Input.WinEvent
 {

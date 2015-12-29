@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Autofac;
 using Plugin.Input.WinEvent;
+using WinStash.Core.contracts;
 using WinStash.Core.plugins;
 
 namespace WinStash
@@ -9,12 +11,44 @@ namespace WinStash
     public class WinStashSrvc
     {
 
+        readonly CancellationTokenSource    _cancellationTokenSource;
+
+        readonly CancellationToken          _cancellationToken;
+        readonly Task                       _task;
+
+        readonly ILifetimeScope _lifetimescope;
+
         private Timer _timer;
         private IContainer _container;
 
         public WinStashSrvc(IContainer cnt)
         {
             _container = cnt;
+
+            _cancellationTokenSource  = new CancellationTokenSource();
+            _cancellationToken        = _cancellationTokenSource.Token;
+
+            _task = new Task(DoWork, _cancellationToken);
+
+            //TODO 2: Foreach of configurations create 
+        }
+
+        private void DoWork()
+        {
+            while (!_cancellationTokenSource.IsCancellationRequested)
+            {
+
+                using (var scope = _container.BeginLifetimeScope())
+                {
+                    var service = _container.ResolveNamed<IInputPlugin>("winevent");
+
+                    var resultos = service.QueryForData();
+
+                    //TODO: Debug part - remove when ready
+                    Console.WriteLine($"EVT : count is {resultos.Count}");
+
+                }
+            }
         }
 
         /// <summary>
@@ -22,8 +56,9 @@ namespace WinStash
         /// </summary>
         public void Start()
         {
-             // Initialise new timer with callback to method and timespan of 5 seconds
-            _timer = new Timer(new TimerCallback(tmr_callback),null,0,5000);
+            _task.Start();
+            // Initialise new timer with callback to method and timespan of 5 seconds
+            //_timer = new Timer(new TimerCallback(tmr_callback),null,0,5000);
         }
 
         /// <summary>
@@ -38,9 +73,11 @@ namespace WinStash
             // Create scope for this execution
             using (var scope = _container.BeginLifetimeScope())
             {
-                var service = scope.Resolve<IInputPlugin>();
+                //var service = scope.Resolve<IInputPlugin>();
 
-                var srvc2 = scope.Resolve<IWinEventPlugin>();
+                //var srvc2 = scope.Resolve<IWinEventPlugin>();
+
+                var service = scope.ResolveNamed<IInputPlugin>("winevent");
 
                 var resultos = service.QueryForData();
 
@@ -63,6 +100,9 @@ namespace WinStash
         public void Stop()
         {
             _timer.Dispose();
+
+            _cancellationTokenSource.Cancel();
+            _task.Wait(_cancellationToken);
         }
     }
 }

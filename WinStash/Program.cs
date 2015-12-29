@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Autofac;
+using Topshelf;
 using WinStash.Core.config;
+using WinStash.Core.contracts;
 using WinStash.Core.plugins;
 
 namespace WinStash
@@ -12,70 +14,27 @@ namespace WinStash
         static void Main(string[] args)
         {
 
-            // Create our container builder 
-            var builder = new ContainerBuilder();
+            // #1 Run Autofac
+            ContainerHelper.Build();
 
-            // Load configs and plugins 
-           // MrConfig.LoadInputPlugins(builder);
-
-            builder.RegisterType<WinStashSrvc>();
-
-            MrConfig.RegisterModules(builder);
+            // #2 Load configurations
             MrConfig.LoadConfiguration();
 
-
-            // Build our container 
-            var container = builder.Build();
-
-            // Register so we can use Icontainer 
-            var builder2 = new ContainerBuilder();
-            builder2.RegisterInstance<IContainer>(container);
-            builder2.Update(container);
-
-
-            do
+            // #3 Start Topshelf - as a service
+            HostFactory.Run(hostConfigurator =>
             {
-
-
-                // Create scope for this execution
-                using (var scope = container.BeginLifetimeScope())
+                hostConfigurator.Service<WinStashSrvc>(serviceConfigurator =>
                 {
-                    var service = scope.Resolve<IEnumerable<IInputPlugin>>();
+                    serviceConfigurator.ConstructUsing(() => ContainerHelper.Container.Resolve<WinStashSrvc>());
+                    serviceConfigurator.WhenStarted(myService => myService.Start());
+                    serviceConfigurator.WhenStopped(myService => myService.Stop());
+                });
 
-                    try
-                    {
-
-                            var plugin = scope.ResolveNamed<IInputPlugin>("winevent");
-
-                            var res = plugin.QueryForData();
-
-                            Console.WriteLine(res[0]["Id"].ToString());
-
-                    }
-                    catch (Exception)
-                    {
-
-                        throw;
-                    }
-
-                }
-            } while (true);
-
-            //HostFactory.Run(hostConfigurator =>
-            //{
-            //    hostConfigurator.Service<WinStashSrvc>(serviceConfigurator =>
-            //    {
-            //        serviceConfigurator.ConstructUsing(() => container.Resolve<WinStashSrvc>());
-            //        serviceConfigurator.WhenStarted(myService => myService.Start());
-            //        serviceConfigurator.WhenStopped(myService => myService.Stop());
-            //    });
-
-            //    hostConfigurator.RunAsLocalSystem();
-
-            //    hostConfigurator.SetDisplayName("WinStash");
-            //    hostConfigurator.SetDescription("Windows Logging tool");
-            //    hostConfigurator.SetServiceName("WinStash");
-            //});
+                hostConfigurator.RunAsLocalSystem();                
+                hostConfigurator.SetDisplayName("WinStash");
+                hostConfigurator.SetDescription("Windows Logging tool");
+                hostConfigurator.SetServiceName("WinStash");
+            });
 
 
         }

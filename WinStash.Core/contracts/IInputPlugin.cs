@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace WinStash.Core.plugins
+namespace WinStash.Core.contracts
 {
     /// <summary>
     /// This interface defines minimum required for Input plugin

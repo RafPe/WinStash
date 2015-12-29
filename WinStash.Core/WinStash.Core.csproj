@@ -81,15 +81,18 @@
   <ItemGroup>
     <Compile Include="config\MasterConfig.cs" />
     <Compile Include="config\MrConfig.cs" />
+    <Compile Include="contracts\IBookKeeper.cs" />
+    <Compile Include="data\BookKeeper.cs" />
     <Compile Include="data\EventDictionary.cs" />
     <Compile Include="data\EventProperties.cs" />
-    <Compile Include="plugins\IInputPlugin.cs" />
-    <Compile Include="plugins\IOutputPlugin.cs" />
-    <Compile Include="plugins\IPlugin.cs" />
-    <Compile Include="plugins\IPluginDescriptor.cs" />
+    <Compile Include="contracts\IInputPlugin.cs" />
+    <Compile Include="contracts\IOutputPlugin.cs" />
+    <Compile Include="contracts\IPlugin.cs" />
+    <Compile Include="contracts\IPluginDescriptor.cs" />
     <Compile Include="plugins\PluginDescriptor.cs" />
     <Compile Include="plugins\PluginManager.cs" />
     <Compile Include="plugins\PluginMetadata.cs" />
+    <Compile Include="plugins\PluginTask.cs" />
     <Compile Include="plugins\PluginTypeAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -5,6 +5,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Xml.Linq;
 using WinStash.Core.data;
+using WinStash.Core.plugins;
 
 namespace Plugin.Input.WinEvent
 {
